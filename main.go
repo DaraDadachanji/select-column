@@ -2,6 +2,7 @@ package main
 
 import (
 	"bufio"
+	"errors"
 	"flag"
 	"fmt"
 	"io"
@@ -15,20 +16,15 @@ func main() {
 	column := parseColumn()
 	flag.Parse()
 	for {
-		line, err := reader.ReadString('\n')
+		line, readErr := reader.ReadString('\n')
 		words := strings.Split(line, " ")
-		var index int
-		if column >= 0 {
-			index = column
-		} else { //reverse from final column
-			index = len(words) - column
-		}
-		if index < len(words) && index >= 0 {
-			fmt.Println(words[index])
+		index, err := getColumnIndex(column, len(words))
+		if err != nil {
+			fmt.Println() //blank line if index out of range
 		} else {
-			fmt.Println()
+			fmt.Println(words[index])
 		}
-		if err == io.EOF {
+		if readErr == io.EOF {
 			return
 		}
 	}
@@ -46,4 +42,18 @@ func parseColumn() int {
 		os.Exit(1)
 	}
 	return integer
+}
+
+func getColumnIndex(column int, wordCount int) (int, error) {
+	var index int
+	if column >= 0 {
+		index = column
+	} else { //reverse from final column
+		index = wordCount - column
+	}
+	if index < wordCount && index >= 0 {
+		return index, nil
+	} else {
+		return 0, errors.New("index out of range")
+	}
 }
