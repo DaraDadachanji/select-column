@@ -6,24 +6,43 @@ import (
 	"fmt"
 	"io"
 	"os"
+	"strconv"
 	"strings"
 )
 
 func main() {
 	reader := bufio.NewReader(os.Stdin)
-	column := flag.Int("c", 1, "which column to select")
-	index := *column - 1
+	column := parseColumn()
 	flag.Parse()
 	for {
 		line, err := reader.ReadString('\n')
 		words := strings.Split(line, " ")
-		if index < len(words) {
+		var index int
+		if column >= 0 {
+			index = column
+		} else { //reverse from final column
+			index = len(words) - column
+		}
+		if index < len(words) && index >= 0 {
 			fmt.Println(words[index])
 		} else {
-			return
+			fmt.Println()
 		}
 		if err == io.EOF {
 			return
 		}
 	}
+}
+
+func parseColumn() int {
+	if flag.NArg() == 0 {
+		return 0
+	}
+	arg := flag.Arg(0)
+	integer, err := strconv.Atoi(arg)
+	if err != nil {
+		os.Stderr.WriteString("invalid column selector, must be an integer")
+		os.Exit(1)
+	}
+	return integer
 }
