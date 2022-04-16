@@ -14,10 +14,9 @@ import (
 func main() {
 	reader := bufio.NewReader(os.Stdin)
 	column := parseColumn()
-	flag.Parse()
 	for {
 		line, readErr := reader.ReadString('\n')
-		words := strings.Split(line, " ")
+		words := splitColumns(line)
 		index, err := getColumnIndex(column, len(words))
 		if err != nil {
 			fmt.Println() //blank line if index out of range
@@ -47,7 +46,7 @@ func parseColumn() int {
 func getColumnIndex(column int, wordCount int) (int, error) {
 	var index int
 	if column >= 0 {
-		index = column
+		index = column - 1
 	} else { //reverse from final column
 		index = wordCount - column
 	}
@@ -56,4 +55,15 @@ func getColumnIndex(column int, wordCount int) (int, error) {
 	} else {
 		return 0, errors.New("index out of range")
 	}
+}
+
+func splitColumns(line string) []string {
+	split := strings.Split(line, " ")
+	var words []string
+	for _, word := range split {
+		if word != "" {
+			words = append(words, word)
+		}
+	}
+	return words
 }
