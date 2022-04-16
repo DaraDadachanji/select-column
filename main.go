@@ -62,7 +62,7 @@ func getColumnIndex(column int, wordCount int) (int, error) {
 	}
 }
 
-// splitColumns splits a string into an array of strings with no whitespace
+// splitColumns splits a string using any amount of whitespace as a delimniter
 func splitColumns(line string) []string {
 	split := strings.Split(line, " ")
 	var words []string
