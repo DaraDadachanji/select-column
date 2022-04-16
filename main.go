@@ -35,6 +35,7 @@ func main() {
 }
 
 func parseColumn() int {
+	flag.Parse()
 	if flag.NArg() == 0 {
 		return 0
 	}
