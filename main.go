@@ -18,12 +18,11 @@ func main() {
 		line, err := reader.ReadString('\n')
 		words := strings.Split(line, " ")
 		if index < len(words) {
-			fmt.Print(words[index])
+			fmt.Println(words[index])
 		} else {
 			return
 		}
 		if err == io.EOF {
-			fmt.Print("\n")
 			return
 		}
 	}
