@@ -13,7 +13,7 @@ import (
 
 func main() {
 	reader := bufio.NewReader(os.Stdin)
-	column := parseColumn()
+	column := parseColumnArgument()
 	for {
 		line, readErr := reader.ReadString('\n')
 		words := splitColumns(line)
@@ -29,10 +29,11 @@ func main() {
 	}
 }
 
-func parseColumn() int {
+// parseColumnArgument parses the column selector from command line arguments
+func parseColumnArgument() int {
 	flag.Parse()
 	if flag.NArg() == 0 {
-		return 0
+		return 0 //default 0
 	}
 	arg := flag.Arg(0)
 	integer, err := strconv.Atoi(arg)
@@ -43,9 +44,13 @@ func parseColumn() int {
 	return integer
 }
 
+// getColumnIndex calculates the column index to select
+// if positive, converts 1-based index into 0-based index
+// if negative, returns the nth last column
+// (e.g. column -2 for 5 columns would be 3, which is the 4th column)
 func getColumnIndex(column int, wordCount int) (int, error) {
 	var index int
-	if column >= 0 {
+	if column > 0 {
 		index = column - 1
 	} else { //reverse from final column
 		index = wordCount - column
@@ -57,6 +62,7 @@ func getColumnIndex(column int, wordCount int) (int, error) {
 	}
 }
 
+// splitColumns splits a string into an array of strings with no whitespace
 func splitColumns(line string) []string {
 	split := strings.Split(line, " ")
 	var words []string
