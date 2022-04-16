@@ -58,7 +58,7 @@ func getColumnIndex(column int, wordCount int) (int, error) {
 	} else if column == 0 {
 		index = 0
 	} else { //reverse from final column
-		index = wordCount - column
+		index = wordCount + column
 	}
 	if index < wordCount && index >= 0 {
 		return index, nil
