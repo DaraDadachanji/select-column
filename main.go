@@ -1,24 +1,29 @@
 package main
 
 import (
+	"bufio"
+	"flag"
 	"fmt"
-	"log"
+	"io"
 	"os"
-	"strconv"
 	"strings"
 )
 
 func main() {
-	line := os.Args[0]
-	index := os.Args[1]
-	columnNumber, err := strconv.Atoi(index)
-	if err != nil {
-		log.Fatal("column index must be an integer")
+	reader := bufio.NewReader(os.Stdin)
+	index := flag.Int("c", 0, "which column to select")
+	flag.Parse()
+	for {
+		line, err := reader.ReadString('\n')
+		words := strings.Split(line, " ")
+		if *index < len(words) {
+			fmt.Print(words[*index])
+		} else {
+			return
+		}
+		if err == io.EOF {
+			os.Stderr.WriteString("")
+			return
+		}
 	}
-	columns := strings.Split(line, " ")
-	if columnNumber < len(columns) {
-		column := columns[columnNumber]
-		fmt.Print(column)
-	}
-
 }

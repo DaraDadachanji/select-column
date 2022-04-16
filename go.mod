@@ -1,3 +1,3 @@
-module github.com/DaraDadachanji/cli-column.git
+module github.com/DaraDadachanji/select-column
 
 go 1.17
