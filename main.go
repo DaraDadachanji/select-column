@@ -11,18 +11,19 @@ import (
 
 func main() {
 	reader := bufio.NewReader(os.Stdin)
-	index := flag.Int("c", 0, "which column to select")
+	column := flag.Int("c", 1, "which column to select")
+	index := *column - 1
 	flag.Parse()
 	for {
 		line, err := reader.ReadString('\n')
 		words := strings.Split(line, " ")
-		if *index < len(words) {
-			fmt.Print(words[*index])
+		if index < len(words) {
+			fmt.Print(words[index])
 		} else {
 			return
 		}
 		if err == io.EOF {
-			os.Stderr.WriteString("")
+			fmt.Print("\n")
 			return
 		}
 	}
