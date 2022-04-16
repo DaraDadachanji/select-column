@@ -3,7 +3,6 @@ package main
 import (
 	"bufio"
 	"errors"
-	"flag"
 	"fmt"
 	"io"
 	"os"
@@ -31,11 +30,15 @@ func main() {
 
 // parseColumnArgument parses the column selector from command line arguments
 func parseColumnArgument() int {
-	flag.Parse()
-	if flag.NArg() == 0 {
-		return 0 //default 0
+	args := os.Args[1:]
+	if len(args) > 1 {
+		os.Stderr.WriteString("too many arguments")
+		os.Exit(1)
+	} else if len(args) == 0 {
+		return 1
 	}
-	arg := flag.Arg(0)
+	arg := args[0]
+
 	integer, err := strconv.Atoi(arg)
 	if err != nil {
 		os.Stderr.WriteString("invalid column selector, must be an integer")
@@ -52,6 +55,8 @@ func getColumnIndex(column int, wordCount int) (int, error) {
 	var index int
 	if column > 0 {
 		index = column - 1
+	} else if column == 0 {
+		index = 0
 	} else { //reverse from final column
 		index = wordCount - column
 	}
