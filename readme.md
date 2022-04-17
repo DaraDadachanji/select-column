@@ -1,11 +1,11 @@
 # Select-column
+
 `select-column` is a simple command line utility to extract a specific column from a text table passed via stdin
 
 ## Why not just use awk, cut, or sed?
 
 Takes longer to type and I don't always remember the full syntax.
 I do this enough that it was worth it for me to abstract this specific use-case into it's own command
-
 
 ## Installation
 
