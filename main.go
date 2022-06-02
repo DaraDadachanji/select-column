@@ -13,14 +13,18 @@ import (
 func main() {
 	reader := bufio.NewReader(os.Stdin)
 	column := parseColumnArgument()
+	init := false
 	for {
 		line, readErr := reader.ReadString('\n')
+		if init {
+			fmt.Println()
+		} else {
+			init = true
+		}
 		words := splitColumns(line)
 		index, err := getColumnIndex(column, len(words))
-		if err != nil {
-			fmt.Println() //blank line if index out of range
-		} else {
-			fmt.Println(words[index])
+		if err == nil {
+			fmt.Print(words[index])
 		}
 		if readErr == io.EOF {
 			return
